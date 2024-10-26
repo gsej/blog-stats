@@ -1,25 +1,23 @@
-server {
+stream {
+  upstream stats_backend {
+    server 127.0.0.1:8080;
+  }
+
+  server {
     listen 80;
     server_name stats.polytunnel.gsej.co.uk;
+    
+    proxy_pass stats_backend;
+    proxy_ssl on;
+    proxy_ssl_server_name on;
+  }
 
-    location / {
-        proxy_pass https://localhost:8080; # Forward traffic to port 8080
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-
-server {
+  server {
     listen 443;
     server_name stats.polytunnel.gsej.co.uk;
-
-    location / {
-        proxy_pass https://localhost:8080; # Forward traffic to port 8081
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
+    
+    proxy_pass stats_backend;
+    proxy_ssl on;
+    proxy_ssl_server_name on;
+  }
 }
