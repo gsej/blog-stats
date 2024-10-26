@@ -1,1 +1,2 @@
-./goatcounter create -domain stats.gsej.co.uk -email gsej@gsej.co.uk -createdb
+setcap 'cap_net_bind_service=+ep' goatcounter
+% goatcounter db create site -vhost stats.example.com -user.email me@example.com
